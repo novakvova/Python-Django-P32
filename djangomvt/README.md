@@ -49,3 +49,28 @@ admin
 123456
 py manage.py runserver 9581
 ```
+
+## Working users Custom Django
+```
+py manage.py startapp users
+pip install Pillow 
+py manage.py makemigrations users
+py manage.py migrate
+```
+
+## Перегляд списку бібліотек їх збережння та клонування проекту
+```
+pip freeze
+pip freeze > requirements.txt
+git clone https://github.com/novakvova/Python-Django-P32.git
+cd Python-Django-P32
+cd djangomvt
+py -m venv .venv
+.venv\Scripts\activate.bat
+
+python.exe -m pip install --upgrade pip
+pip install -r requirements.txt
+cd atbmvt
+py manage.py runserver 9581
+```
+
