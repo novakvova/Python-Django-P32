@@ -1,7 +1,7 @@
-from pyexpat.errors import messages
-from django.shortcuts import redirect, render
 
+from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
+from django.contrib import messages
 
 # Create your views here.
 def register(request):
@@ -9,6 +9,7 @@ def register(request):
         # print("---Зберігаємо дані користувача---")
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save()
             return redirect('homepage')
         else:
             messages.success(request, 'Виправте помилки у формі')
