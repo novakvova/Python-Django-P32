@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django_resized import ResizedImageField
 
+from .utils import upload_avatar
+
 # Create your models here.
 # Таблиці в БД
 class CustomUser(AbstractUser):
@@ -10,15 +12,16 @@ class CustomUser(AbstractUser):
         crop=['middle', 'center'],
         quality=85,
         force_format='WEBP',
-        upload_to='avatars/small/',
+        upload_to=upload_avatar('small'),
         null=True,
         blank=True
     )
+    
     image_medium = ResizedImageField(
         size=[800, 800],
         quality=85,
         force_format='WEBP',
-        upload_to='avatars/medium/',
+        upload_to=upload_avatar('medium'),
         null=True,
         blank=True
     )
@@ -27,7 +30,7 @@ class CustomUser(AbstractUser):
         size=[1200, 1200],
         quality=90,
         force_format='WEBP',
-        upload_to='avatars/large/',
+        upload_to=upload_avatar('large'),
         null=True,
         blank=True
     )
