@@ -1,7 +1,8 @@
 
 from django.shortcuts import redirect, render
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserLoginForm
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def register(request):
@@ -11,6 +12,8 @@ def register(request):
         if form.is_valid():
             try:
                 user = form.save(commit=False)
+                if 'email' in form.cleaned_data:
+                    user.username = form.cleaned_data['email']
                 if 'image' in request.FILES:
                     image = request.FILES.get("image")
                     user.image_small = image
@@ -26,3 +29,20 @@ def register(request):
         form = CustomUserCreationForm()
 
     return render(request, "register.html", {"form": form})
+
+def user_login(request):
+    if request.method == 'POST':
+        form = CustomUserLoginForm(data = request.POST)
+        if form.is_valid():
+            user = authenticate(request, username = form.cleaned_data['username'], 
+                                password = form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+                return redirect('homepage')
+    else:
+        form = CustomUserLoginForm()
+    return render(request, 'login.html', {'form': form})
+    
+def user_logout(request):
+    logout(request)
+    return redirect('homepage')
