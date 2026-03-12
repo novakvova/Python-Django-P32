@@ -20,6 +20,7 @@ def register(request):
                     user.image_medium = image
                     user.image_large = image
                 user.save()
+                login(request, user)
                 return redirect('homepage')
             except Exception as e:
                 messages.error(request, f"Щось пішло не так: {str(e)}")

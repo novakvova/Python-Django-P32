@@ -52,7 +52,7 @@ class CustomUserCreationForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if CustomUser.objects.filter(email=email).exists():
-            return forms.ValidationError("Дана пошта уже зареєстрована")
+            raise forms.ValidationError("Дана пошта уже зареєстрована")
         return email
     
 
