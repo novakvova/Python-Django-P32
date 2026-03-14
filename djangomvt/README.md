@@ -71,6 +71,7 @@ py -m venv .venv
 python.exe -m pip install --upgrade pip
 pip install -r requirements.txt
 cd atbmvt
+py manage.py migrate
 py manage.py runserver 9581
 ```
 
