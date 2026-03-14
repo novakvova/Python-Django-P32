@@ -75,3 +75,11 @@ py manage.py migrate
 py manage.py runserver 9581
 ```
 
+## Working categories Django
+```
+cd atbmvt
+py manage.py startapp categories
+py manage.py makemigrations categories
+py manage.py migrate
+```
+
