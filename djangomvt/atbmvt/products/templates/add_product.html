@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imagePreviewHeight: 150,
         server: {
             process: {
-                url: "{% url 'products:upload_temp_image' %}",
+                url: "/products/upload_temp_image",
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}'
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 onerror: (response) => console.log("Error:", response)
             },
             revert: (uniqueFileId, load, error) => {
-                fetch("{% url 'products:delete_temp_image' %}", {
+                fetch("/products/delete_temp_image", {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
