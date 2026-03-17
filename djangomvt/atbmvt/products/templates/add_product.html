@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imagePreviewHeight: 150,
         server: {
             process: {
-                url: "/products/upload_temp_image",
+                url: "{% url 'products:upload_temp_image' %}",
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': '{{ csrf_token }}'
