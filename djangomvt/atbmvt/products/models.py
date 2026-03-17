@@ -15,3 +15,20 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images", null=True, blank=True
+    )
+    image = models.ImageField(upload_to="images/")
+    priority = models.PositiveIntegerField(default=0, help_text="0 = головне фото")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["priority", "created_at"]
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"Фото [{self.priority}] для {self.product.name}"
