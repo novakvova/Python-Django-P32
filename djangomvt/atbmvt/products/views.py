@@ -1,6 +1,6 @@
 import os
-from django.shortcuts import render
-from .models import ProductImage
+from django.shortcuts import redirect, render
+from .models import Product, ProductImage
 from django.views.decorators.csrf import csrf_exempt
 from .forms import ProductForm
 from PIL import Image
@@ -10,8 +10,27 @@ from django.http import JsonResponse
 import uuid
 
 # Create your views here.
+def show_products(request):
+    products = Product.objects.prefetch_related("images").all()
+    return render(request, 'products.html', {'products': products})
+
 def add_product(request):
-    form = ProductForm()
+    if request.method == "POST":
+        form = ProductForm(request.POST)
+        images_ids = request.POST.getlist('images')
+        if form.is_valid():
+            product = form.save()
+
+            for idx, img_id in enumerate(images_ids):
+                img = ProductImage.objects.get(id=img_id)
+                img.product = product
+                img.priority = idx
+                img.save()
+
+            return redirect("products:show_products")  # назва URL на список товарів
+    else:
+        form = ProductForm()
+
     return render(request, "add_product.html", {"form": form})
 
 @csrf_exempt
@@ -51,3 +70,19 @@ def delete_temp_image(request):
                 return JsonResponse({"error": "File not found"}, status=404)
         return JsonResponse({"error": "No file_id provided"}, status=400)
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+def delete_product(_, product_id):
+    try:
+        product = Product.objects.get(id=product_id)
+
+        for img in product.images.all():
+            if img.image:
+                img.image.delete(save=False)
+            img.delete()
+
+        product.delete()
+
+    except Product.DoesNotExist:
+        pass
+
+    return redirect('products:show_products')
