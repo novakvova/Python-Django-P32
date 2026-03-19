@@ -31,3 +31,22 @@ def upload_temp_image(request):
         img.image.save(filename, ContentFile(buffer.read()), save=True)
         
         return JsonResponse({"file_id": img.id})
+    
+@csrf_exempt
+def delete_temp_image(request):
+    if request.method == "DELETE":
+        import json
+        data = json.loads(request.body)
+        file_id = data.get("file_id")
+        if file_id:
+            try:
+                img = ProductImage.objects.get(id=file_id, product__isnull=True)
+                if img.image:
+                    if os.path.isfile(img.image.path):
+                        os.remove(img.image.path)
+                img.delete()
+                return JsonResponse({"status": "ok"})
+            except ProductImage.DoesNotExist:
+                return JsonResponse({"error": "File not found"}, status=404)
+        return JsonResponse({"error": "No file_id provided"}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)
