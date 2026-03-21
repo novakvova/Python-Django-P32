@@ -48,6 +48,15 @@ pip freeze > requirements.txt
 ```
 
 
+## Working City
+```
+py manage.py startapp cities
+py manage.py makemigrations cities
+py manage.py migrate
+
+```
+
+
 
 ## Додаю superuser
 ```
