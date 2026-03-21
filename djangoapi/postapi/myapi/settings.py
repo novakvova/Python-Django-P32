@@ -88,7 +88,7 @@ DATABASES = {
     #joricah964@pazard.comQ
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'lep-dark-sky-aliu55as-pooler.c-3.eu-central-1.aws.neon.tech',
+        'HOST': 'ep-dark-sky-aliu55as-pooler.c-3.eu-central-1.aws.neon.tech',
         'NAME': 'neondb',
         'USER': 'neondb_owner',
         'PASSWORD': 'npg_sc3NMfpS4dly',
