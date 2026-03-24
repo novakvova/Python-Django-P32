@@ -1,17 +1,20 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from './assets/vite.svg'
-// import heroImg from './assets/hero.png'
 import './App.css'
+import { Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import AddCityPage from "./pages/AddCityPage";
+import MainLayout from "./MainLayout";
+
+
 
 function App() {
-  return (
-    <>
-        {/*<h1 className={"text-3xl text-green-600 font-bold text-center"}>Привіт! Дружі :🔥</h1>*/}
-        <HomePage />
-    </>
-  )
+    return (
+        <Routes>
+            <Route path="/" element={<MainLayout/>}>
+                <Route index element={<HomePage />} />
+                <Route path="add-city" element={<AddCityPage />} />
+            </Route>
+        </Routes>
+    )
 }
 
-export default App
+export default App 

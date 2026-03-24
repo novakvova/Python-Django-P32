@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-import {useGetCitiesQuery} from "../../services/cityApi.ts";
+import {useDeleteCityMutation, useGetCitiesQuery} from "../../services/cityApi.ts";
 // import { useNavigate } from "react-router-dom";
 
 
@@ -22,22 +22,26 @@ function HomePage() {
     //     fetchCities();
     // }, []);
 
-    // const deleteCity = async (id: number) => {
-    //     try {
-    //         await axios.delete(`${APP_ENV.API_BASE_URL}/api/cities/${id}/`);
-    //         setCities(prev => prev.filter(c => c.id !== id));
-    //     } catch (error) {
-    //         console.error("Помилка при видаленні країни:", error);
-    //     }
-    // };
+    const deleteCityHandler = async (id: number) => {
+        try {
+            await deleteCity(id).unwrap();
+        } catch (error) {
+            console.error("Помилка при видаленні країни:", error);
+        }
+    };
 
-    const {data: cities} = useGetCitiesQuery();
+    const {data: cities, isLoading, error} = useGetCitiesQuery();
+    const [deleteCity] = useDeleteCityMutation();
+    if (isLoading)
+        return (
+            <>Loading ...</>
+        );
 
     return (
 
         <div className="p-5">
             <h1 className="text-3xl dark:text-white font-bold mb-6 text-center">Список міст</h1>
-            {/*{error && <p className="text-red-600 text-center mb-4">Помилка: {error}</p>}*/}
+            {error && <p className="text-red-600 text-center mb-4">Помилка: {error!.data}</p>}
             <div className="p-10 bg-transparent min-h-screen">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                     {Array.isArray(cities) && cities.map(city => (
@@ -57,7 +61,7 @@ function HomePage() {
                             <div className="p-6 text-center">
                                 <button type="button"
                                         onClick={() =>
-                                            console.log("delete item", city.id) //deleteCity(city.id)
+                                            deleteCityHandler(city.id)
                                         }
                                         className="mt-2 px-5 py-2 text-sm font-semibold rounded-lg bg-red-600 hover:bg-red-700 cursor-pointer text-white transition-colors shadow-md"
                                 >

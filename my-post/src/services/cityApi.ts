@@ -1,6 +1,7 @@
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {createBaseQuery} from "../utils/createBaseQuery.ts";
 import type {ICity} from "../types/city/ICity.ts";
+import type {ICityCreate} from "../types/city/ICityCreate.ts";
 
 export const cityApi= createApi({
     reducerPath: 'cityApi',
@@ -11,15 +12,35 @@ export const cityApi= createApi({
         getCities: builder.query<ICity[], void>({
             query: () => {
                 return {
-                    url: '',
+                    url: '/',
                     method: 'GET',
                 }
             },
+            providesTags: ["Cities"]
         }),
+
+        deleteCity: builder.mutation<void, number>({
+            query: id => ({
+                url: `/${id}/`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ["Cities"]
+        }),
+
+        createCity: builder.mutation<void, ICityCreate>({
+            query: body => ({
+                url: "/",
+                method: "POST",
+                body: body
+            }),
+            invalidatesTags: ["Cities"]
+        })
 
     })
 });
 
 export const {
-    useGetCitiesQuery
+    useGetCitiesQuery,
+    useDeleteCityMutation,
+    useCreateCityMutation,
 } = cityApi;
