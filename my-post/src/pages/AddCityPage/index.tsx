@@ -5,6 +5,9 @@ import {useNavigate} from "react-router-dom";
 import type {ICityCreate} from "../../types/city/ICityCreate";
 import {Editor} from "@tinymce/tinymce-react";
 import {useCreateCityMutation} from "../../services/cityApi.ts";
+import InputField from "../../common/inputs/InputField.tsx";
+import type {UploadFile} from "antd";
+import ImagesUploader from "../../common/inputs/ImagesUploader.tsx";
 
 function AddCityPage() {
     const [name, setName] = useState("");
@@ -14,6 +17,23 @@ function AddCityPage() {
         name: "",
         description: "",
     });
+
+    const [errors, setErrors] = useState<string[]>([]);
+
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    const [imageError, setImageError] = useState(false);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    };
+
+    const validationChange = (isValid: boolean, fieldKey: string) => {
+        if (isValid && errors.includes(fieldKey)) {
+            setErrors(errors.filter((x) => x !== fieldKey));
+        } else if (!isValid && !errors.includes(fieldKey)) {
+            setErrors((state) => [...state, fieldKey]);
+        }
+    };
 
     const [createCategory] = useCreateCityMutation();
 
@@ -54,25 +74,38 @@ function AddCityPage() {
                  border border-gray-200 dark:border-slate-700"
             >
 
+                <InputField
+                    label="Назва"
+                    name="name"
+                    placeholder="Вкажіть назву"
+                    value={formValues.name}
+                    onChange={handleChange}
+                    onValidationChange={validationChange}
+                    rules={[{ rule: "required", message: "Назва є обов'язковою" }]}
+                />
 
-                {/*{errors.General && (*/}
-                {/*    <p className="text-red-600 mb-4 text-center font-medium">{errors.General[0]}</p>*/}
-                {/*)}*/}
-
-
-
-                <div className="mb-5">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
-                        Назва
-                    </label>
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-400 focus:border-green-400 dark:bg-slate-800 dark:text-white transition"
+                <div className="w-full text-center">
+                    <ImagesUploader
+                        fileList={fileList}
+                        setFileList={setFileList}
+                        imageError={imageError}
+                        setImageError={setImageError}
                     />
-                    {/*{errors.Name && <p className="text-red-600 text-sm">{errors.Name[0]}</p>}*/}
+                    {imageError && <p className="text-red-500 text-sm mt-1">Image is required</p>}
                 </div>
+
+                {/*<div className="mb-5">*/}
+                {/*    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">*/}
+                {/*        Назва*/}
+                {/*    </label>*/}
+                {/*    <input*/}
+                {/*        type="text"*/}
+                {/*        value={name}*/}
+                {/*        onChange={(e) => setName(e.target.value)}*/}
+                {/*        className="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-400 focus:border-green-400 dark:bg-slate-800 dark:text-white transition"*/}
+                {/*    />*/}
+                {/*    /!*{errors.Name && <p className="text-red-600 text-sm">{errors.Name[0]}</p>}*!/*/}
+                {/*</div>*/}
 
                 <div className="mb-5">
                     <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
