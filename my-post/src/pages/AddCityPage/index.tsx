@@ -10,6 +10,11 @@ function AddCityPage() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState<string>("");
 
+    const [formValues, setFormValues] = useState<ICityCreate>({
+        name: "",
+        description: "",
+    });
+
     const [createCategory] = useCreateCityMutation();
 
     // const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
