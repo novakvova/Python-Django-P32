@@ -31,7 +31,7 @@ python -m django --version
 mkdir postapi
 django-admin startproject myapi postapi
 cd postapi
-py manage.py runserver 8294
+py manage.py runserver 9581
 ```
 
 ## Install Postgres
@@ -55,8 +55,6 @@ py manage.py makemigrations cities
 py manage.py migrate
 
 ```
-
-
 
 ## Додаю superuser
 ```
