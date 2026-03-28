@@ -10,7 +10,6 @@ import type {UploadFile} from "antd";
 import ImagesUploader from "../../common/inputs/ImagesUploader.tsx";
 
 function AddCityPage() {
-    const [name, setName] = useState("");
     const [description, setDescription] = useState<string>("");
 
     const [formValues, setFormValues] = useState<ICityCreate>({
@@ -35,7 +34,7 @@ function AddCityPage() {
         }
     };
 
-    const [createCategory] = useCreateCityMutation();
+    const [createCity] = useCreateCityMutation();
 
     // const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
     const [showEditor, setShowEditor] = useState(false);
@@ -44,11 +43,24 @@ function AddCityPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // const formData = new FormData();
+            // formData.append("name", formValues.name);
+            // formData.append("description", description);
+            //
+            // if (fileList.length > 0 && fileList[0].originFileObj) {
+            //     formData.append("image", fileList[0].originFileObj as File);
+            // }
+            if (fileList.length === 0 || !fileList[0]?.originFileObj) {
+                setImageError(true);
+                return;
+            }
             const model : ICityCreate = {
-                name,
+                ...formValues,
+                image: fileList[0].originFileObj,
                 description,
+
             };
-            await createCategory(model).unwrap();
+            await createCity(model).unwrap();
             // await axios.post(`${APP_ENV.API_BASE_URL}/api/cities/`, model, {
             //     headers: { "Content-Type": "application/json" },
             // });
@@ -94,19 +106,6 @@ function AddCityPage() {
                     {imageError && <p className="text-red-500 text-sm mt-1">Image is required</p>}
                 </div>
 
-                {/*<div className="mb-5">*/}
-                {/*    <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">*/}
-                {/*        Назва*/}
-                {/*    </label>*/}
-                {/*    <input*/}
-                {/*        type="text"*/}
-                {/*        value={name}*/}
-                {/*        onChange={(e) => setName(e.target.value)}*/}
-                {/*        className="w-full border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-400 focus:border-green-400 dark:bg-slate-800 dark:text-white transition"*/}
-                {/*    />*/}
-                {/*    /!*{errors.Name && <p className="text-red-600 text-sm">{errors.Name[0]}</p>}*!/*/}
-                {/*</div>*/}
-
                 <div className="mb-5">
                     <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">
                         Опис
@@ -124,9 +123,6 @@ function AddCityPage() {
                             <span className="text-gray-400 dark:text-slate-500">Натисніть, щоб додати опис...</span>
                         )}
                     </div>
-                    {/*{errors.Description && (*/}
-                    {/*    <p className="text-red-600 text-sm">{errors.Description[0]}</p>*/}
-                    {/*)}*/}
                 </div>
 
 
