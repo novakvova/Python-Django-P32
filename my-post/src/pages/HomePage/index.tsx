@@ -4,23 +4,7 @@ import {useDeleteCityMutation, useGetCitiesQuery} from "../../services/cityApi.t
 
 
 function HomePage() {
-    // const [cities, setCities] = useState<ICity[]>([]);
-    // const [error, setError] = useState<string | null>(null);
-    // const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     const fetchCities = async () => {
-    //         try {
-    //             const response = await axios.get<ICity[]>(`${APP_ENV.API_BASE_URL}/api/cities/`);
-    //             setCities(response.data);
-    //         } catch (err) {
-    //             const error = err as AxiosError;
-    //             setError(error.message);
-    //             console.error("Помилка при отриманні міст:", error);
-    //         }
-    //     };
-    //     fetchCities();
-    // }, []);
 
     const deleteCityHandler = async (id: number) => {
         try {
@@ -41,7 +25,7 @@ function HomePage() {
 
         <div className="p-5">
             <h1 className="text-3xl dark:text-white font-bold mb-6 text-center">Список міст</h1>
-            {error && <p className="text-red-600 text-center mb-4">Помилка: {error!.data}</p>}
+            {error && <p className="text-red-600 text-center mb-4">Помилка: {error.toString()}</p>}
             <div className="p-10 bg-transparent min-h-screen">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
                     {Array.isArray(cities) && cities.map(city => (
