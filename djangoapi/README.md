@@ -73,6 +73,13 @@ py manage.py makemigrations users
 py manage.py migrate
 ```
 
+## Working Department
+```
+py manage.py startapp department
+py manage.py makemigrations department
+py manage.py migrate
+```
+
 ## Перегляд списку бібліотек їх збережння та клонування проекту
 ```
 pip freeze
