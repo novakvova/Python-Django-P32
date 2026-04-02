@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  api:
+    image: novakvova/django-api-p32:latest
+    container_name: django-api-p32
+    ports:
+      - "4512:8000"
+  front:
+    image: novakvova/my-post:latest
+    #build: 
+    #  context: ./my-transfer-ts
+    container_name: react_front
+    ports:
+      - "4518:80"
